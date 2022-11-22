@@ -42,6 +42,7 @@ dependencies:
   introduction_screen: ^3.0.2
   flutter_screenutil: ^5.6.0
   modal_bottom_sheet: ^2.1.2
+  table_calendar: ^3.0.8
   # bottom_indicator_bar: ^2.0.0
 
 dev_dependencies:
@@ -75,8 +76,6 @@ flutter:
     - images/pana.png
     - images/doctor.png
     - images/group.png
-    - images/Frame 11.png
-    - images/Frame 12.png
     - images/Ellipse30.png
     - images/patch-check.png
     - images/chat.png
@@ -94,7 +93,11 @@ flutter:
     - images/Outline.png
     - images/Ellipse35.png
     - images/dot.png
+    - images/Sudha.png
     - images/sidebardp.png
+    - images/logindevices.png
+    - images/personalinfo.png
+    - images/passwrd.png
     - assets/OneGlance_Logo.png
     # - images/Frame 11.
 

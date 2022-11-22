@@ -17,7 +17,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
       ),
       body: Container(
         alignment: Alignment.center,
-        child: Column(
+        child: 
+        Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
@@ -35,42 +36,43 @@ class _ModalBottomSheetState extends State<ModalBottomSheet> {
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
               onPressed: () {
                 showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          ListTile(
-                            leading: new Icon(Icons.photo),
-                            title: new Text('Photo'),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          ListTile(
-                            leading: new Icon(Icons.music_note),
-                            title: new Text('Music'),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          ListTile(
-                            leading: new Icon(Icons.videocam),
-                            title: new Text('Video'),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          ListTile(
-                            leading: new Icon(Icons.share),
-                            title: new Text('Share'),
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                        ],
-                      );
-                    });
+                  context: context,
+                  builder: (context) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          leading: new Icon(Icons.photo),
+                          title: new Text('Photo'),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        ListTile(
+                          leading: new Icon(Icons.music_note),
+                          title: new Text('Music'),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        ListTile(
+                          leading: new Icon(Icons.videocam),
+                          title: new Text('Video'),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        ListTile(
+                          leading: new Icon(Icons.share),
+                          title: new Text('Share'),
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  }
+                );
               },
               // padding: EdgeInsets.only(left: 30, right: 30, top: 15, bottom: 15),
               // color: Colors.pink,

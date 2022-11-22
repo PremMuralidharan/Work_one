@@ -60,38 +60,6 @@ class _HomeScreen1State extends State<HomeScreen1> {
                   },
                 ),
               ),
-
-              // Container(
-              //   // margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
-              //   alignment: Alignment.centerLeft,
-              //   child: const Text(
-              //     "Title 001",
-              //     style: TextStyle(
-              //       fontFamily: 'Open Sans',
-              //       fontWeight: FontWeight.bold,
-              //       fontSize: 30.0,
-              //       height: 1,
-              //       color: Color.fromARGB(255, 0, 0, 0),
-              //     ),
-              //   ),
-              // ),
-
-              // Container(
-              //   // margin: const EdgeInsets.fromLTRB(0, 16, 10, 0),
-              //   alignment: Alignment.centerLeft,
-              //   child: const Text(
-              //     "Connect with your Doctor over chat for your health issues.",
-              //     style: TextStyle(
-              //       fontFamily: 'Open Sans',
-              //       fontWeight: FontWeight.normal,
-              //       fontSize: 22.0,
-              //       height: 1,
-              //       color: Color.fromARGB(255, 0, 0, 0),
-              //     ),
-              //   ),
-              // ),
-
-              // Container created for dots
               Container(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 40),
                 child: Row(
