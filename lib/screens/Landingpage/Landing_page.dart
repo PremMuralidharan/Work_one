@@ -856,55 +856,53 @@ class _LandingPageState extends State<LandingPage> {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: 30,
-            ),
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.transparent,
-              ),
-              child: Container(
-                  height: 142,
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Image.asset(
-                        "images/sidebardp.png",
-                        // width: 80.w,
-                        // height: 80.h,
-                      ),
-                      Text("Sudha Ragunathan",
-                          style: TextStyle(
-                              fontFamily: "Open Sans",
-                              fontWeight: FontWeight.w700,
-                              fontSize: 17.sp,
-                              color: Colors.black
-                            )
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ViewEditProfile(),
-                          ));
-                        },
-                        child: 
-                          Text(
-                            'View and edit profile',
-                            style: TextStyle(
-                              fontFamily: "Open Sans",
-                              fontWeight: FontWeight.normal,
-                              fontSize: 12.sp,
-                              color: Color.fromRGBO(77, 141, 142, 1),
-                            )
+              height : 190.h, 
+              child : DrawerHeader(
+                  decoration: const BoxDecoration(
+                    color: Colors.transparent,
+                  ),
+                  child: Container(
+                      // height: 142,
+                      width: MediaQuery.of(context).size.width,
+                      // height: MediaQuery.of(context).size.height,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Image.asset(
+                            "images/sidebardp.png",
+                            width: 80.w,
+                            height: 80.h,
+                          ),
+                          Text("Sudha Ragunathan",
+                              style: TextStyle(
+                                  fontFamily: "Open Sans",
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 17.sp,
+                                  color: Colors.black
+                                )
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const ViewEditProfile(),
+                              ));
+                            },
+                            child: 
+                              Text(
+                                'View and edit profile',
+                                style: TextStyle(
+                                  fontFamily: "Open Sans",
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12.sp,
+                                  color: Color.fromRGBO(77, 141, 142, 1),
+                                )
+                              )
                           )
+                        ],
                       )
-                    ],
-                  )
-                ),
-            ),
-            SizedBox(
-              height: 20,
+                    ),
+              ),
             ),
             GestureDetector(
               onTap: () {
