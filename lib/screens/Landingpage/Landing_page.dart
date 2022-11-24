@@ -1,9 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:my_app/screens/Landingpage/Notification_page.dart';
 import 'package:my_app/components/modelbottom.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:my_app/screens/sidebar/ViewEditProfile_page.dart';
+import 'package:my_app/screens/sidebar/Emr.dart';
+import 'package:my_app/responsive.dart';
+import 'package:my_app/screens/Appointment/Summary.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -21,6 +25,8 @@ class _LandingPageState extends State<LandingPage> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   CalendarFormat _calendarFormat = CalendarFormat.month;
+  String selectedChip = "";
+  TextEditingController _date = TextEditingController();
 
   final List<String> doctors = [
     "Dr. Charollette Baker",
@@ -28,11 +34,23 @@ class _LandingPageState extends State<LandingPage> {
     "Dr. Chitra",
     "Dr. Arvind"
   ];
+
   final List<String> specialists = [
     "Gestational Diabetes",
     "Pediatrician",
     "Cardiologist",
     "Surgeon"
+  ];
+
+  final slots = [
+    "8:30 AM",
+    "9:00 AM",
+    "9:30 AM",
+    "10:00 AM",
+    "11:00 AM",
+    "11:30 AM",
+    "12:00 PM",
+    "12:30 PM"
   ];
 
   void _onItemTapped(int index) {
@@ -41,9 +59,57 @@ class _LandingPageState extends State<LandingPage> {
     });
   }
 
+  Widget _myChip(String number, String name, StateSetter state) {
+    return Container(
+      // margin: const EdgeInsets.all(3.0),
+      width: 93.w,
+      height: 36.h,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: const Color.fromRGBO(210, 210, 210, 1),
+        ),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(100),
+          topRight: Radius.circular(100),
+          bottomLeft: Radius.circular(100),
+          bottomRight: Radius.circular(100),
+        ),
+        color: selectedChip == number
+            ? Color.fromRGBO(1, 92, 93, 1)
+            : Color.fromRGBO(252, 252, 252, 1),
+      ),
+      child: Center(
+        child: TextButton(
+          onPressed: () {
+            state(() {
+              selectedChip = number;
+            });
+          },
+          child: Text(
+            '$number',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontFamily: 'Open Sans',
+              fontWeight: FontWeight.normal,
+              fontSize: 15.0,
+              // height: 1,
+              color: selectedChip == number
+                  ? Color.fromRGBO(252, 252, 252, 1)
+                  : Color.fromRGBO(128, 128, 128, 1),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> mywidgets = [];
+    List<Widget> doctorslots = [];
+    Size _size = MediaQuery.of(context).size;
+    final textscale = MediaQuery.of(context).textScaleFactor;
+
     mywidgets.add(Card(
       color: Color.fromRGBO(1, 92, 93, 1),
       margin: EdgeInsets.fromLTRB(0, 16.h, 0, 16.h),
@@ -79,7 +145,7 @@ class _LandingPageState extends State<LandingPage> {
                       style: TextStyle(
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w700,
-                        fontSize: 17.sp,
+                        fontSize: 17 * textscale,
                         height: 1,
                         color: Color.fromARGB(255, 255, 255, 255),
                       ),
@@ -90,7 +156,7 @@ class _LandingPageState extends State<LandingPage> {
                       style: TextStyle(
                         fontFamily: 'Open Sans',
                         fontWeight: FontWeight.w400,
-                        fontSize: 12.sp,
+                        fontSize: 12 * textscale,
                         height: 1,
                         color: Color.fromARGB(255, 255, 255, 255),
                       ),
@@ -135,11 +201,11 @@ class _LandingPageState extends State<LandingPage> {
                     children: [
                       Text("Anna Nagar"),
                       SizedBox(
-                        width: 4.w,
+                        width: 4 * textscale,
                       ),
                       Image.asset("images/dot.png"),
                       SizedBox(
-                        width: 4.w,
+                        width: 4 * textscale,
                       ),
                       Text("Appollo Hospital")
                     ],
@@ -185,7 +251,7 @@ class _LandingPageState extends State<LandingPage> {
                         style: TextStyle(
                           fontFamily: 'Open Sans',
                           fontWeight: FontWeight.normal,
-                          fontSize: 17.sp,
+                          fontSize: 17 * textscale,
                           height: 1,
                           color: Color.fromARGB(255, 255, 255, 255),
                         ),
@@ -199,6 +265,7 @@ class _LandingPageState extends State<LandingPage> {
         ),
       ),
     ));
+
     for (int x = 0; x < 4; x++) {
       mywidgets.add(
         Card(
@@ -236,7 +303,7 @@ class _LandingPageState extends State<LandingPage> {
                           style: TextStyle(
                             fontFamily: 'Open Sans',
                             fontWeight: FontWeight.w700,
-                            fontSize: 17.sp,
+                            fontSize: 17 * textscale,
                             height: 1,
                             color: Color.fromARGB(255, 0, 0, 0),
                           ),
@@ -247,7 +314,7 @@ class _LandingPageState extends State<LandingPage> {
                           style: TextStyle(
                             fontFamily: 'Open Sans',
                             fontWeight: FontWeight.w400,
-                            fontSize: 12.sp,
+                            fontSize: 12 * textscale,
                             height: 1,
                             color: Color.fromARGB(255, 0, 0, 0),
                           ),
@@ -336,429 +403,7 @@ class _LandingPageState extends State<LandingPage> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            showModalBottomSheet(
-                                context: context,
-                                backgroundColor: Colors.transparent,
-                                builder: (BuildContext context) {
-                                  return StatefulBuilder(builder: (BuildContext context,StateSetter state) {
-                                    return Container(
-                                      decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(25),
-                                            topRight: Radius.circular(25),
-                                          )),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: <Widget>[
-                                          ListTile(
-                                            leading: Material(
-                                              color: Colors.transparent,
-                                              child: InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Icon(Icons.arrow_back) // the arrow back icon
-                                                ),
-                                            ),
-                                            title: Center(
-                                              child: Text(
-                                                'Book appointment',
-                                                style: TextStyle(
-                                                  fontFamily: 'Open sans',
-                                                  fontSize: 17.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                                textAlign: TextAlign.start,
-                                              ), // Your desired title
-                                            )
-                                          ),
-                                          Column(
-                                            children: [
-                                              Text(
-                                                'Select Option',
-                                                style: TextStyle(
-                                                  fontFamily: 'Open sans',
-                                                  fontSize: 15.sp,
-                                                  fontWeight: FontWeight.w700,
-                                                ),
-                                                textAlign: TextAlign.justify,
-                                              ),
-                                              RadioListTile(
-                                                title: const Text("Tele-Consultation"),
-                                                value: "Tele-Consultation",
-                                                activeColor:
-                                                    const Color.fromRGBO(239, 97, 32, 1),
-                                                groupValue: appointment,
-                                                onChanged: (value) {
-                                                  state(() {
-                                                    appointment = value;
-                                                  });
-                                                },
-                                              ),
-                                              RadioListTile(
-                                                title: const Text("Visit to clinic"),
-                                                value: "Visit to clinic",
-                                                activeColor:const Color.fromRGBO(239, 97, 32, 1),
-                                                groupValue: appointment,
-                                                onChanged: (value) {
-                                                  state(() {
-                                                    appointment = value;
-                                                  });
-                                                },
-                                              ),
-                                              RadioListTile(
-                                                title: const Text(
-                                                    "Video Consultation"),
-                                                value: "Video Consultation",
-                                                activeColor:
-                                                    const Color.fromRGBO(239, 97, 32, 1),
-                                                groupValue: appointment,
-                                                onChanged: (value) {
-                                                  state(() {
-                                                    appointment = value;
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                          Container(
-                                            margin: const EdgeInsets.all(10.0),
-                                            width: 342,
-                                            height: 48,
-                                            decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(100),
-                                                topRight: Radius.circular(100),
-                                                bottomLeft:
-                                                    Radius.circular(100),
-                                                bottomRight:
-                                                    Radius.circular(100),
-                                              ),
-                                              color:
-                                                  Color.fromRGBO(1, 92, 93, 1),
-                                            ),
-                                            child: TextButton(
-                                              onPressed: () {
-                                                // showDatePicker(
-                                                //         context: context,
-                                                //         initialDate: date,
-                                                //         firstDate: DateTime(1900),
-                                                //         lastDate: DateTime(2100),
-                                                //       );
-                                                showModalBottomSheet(
-                                                  context: context,
-                                                  backgroundColor: Colors.transparent,
-                                                  builder: (BuildContext context) {
-                                                    return StatefulBuilder(
-                                                        builder: (BuildContext context,StateSetter state) {
-                                                          return Container(
-                                                            decoration: const BoxDecoration(
-                                                              color: Colors.white,
-                                                              borderRadius: BorderRadius.only(
-                                                                topLeft: Radius.circular(25),
-                                                                topRight: Radius.circular(25),
-                                                              )
-                                                            ),
-                                                            child:Column(
-                                                              children: [
-                                                                ListTile(
-                                                                  leading: Material(
-                                                                    color: Colors.transparent,
-                                                                    child: InkWell(
-                                                                      onTap: () {
-                                                                        Navigator.of(context).pop();
-                                                                      },
-                                                                      child: const Icon(Icons.arrow_back) // the arrow back icon
-                                                                    ),
-                                                                  ),
-                                                                  title: Center(
-                                                                    child: Text(
-                                                                      'Book appointment',
-                                                                      style: TextStyle(
-                                                                        fontFamily: 'Open sans',
-                                                                        fontSize: 17.sp,
-                                                                        fontWeight: FontWeight.w600,
-                                                                      ),
-                                                                      textAlign: TextAlign.start,
-                                                                    ), // Your desired title
-                                                                  )
-                                                                ),
-                                                                TableCalendar(
-                                                                  firstDay:DateTime.utc(2010, 10, 16),
-                                                                  lastDay: DateTime.utc(2030, 3, 14),
-                                                                  rowHeight: 43,
-                                                                  focusedDay: _focusedDay,
-                                                                  calendarFormat: _calendarFormat,
-                                                                  calendarStyle: const CalendarStyle(
-                                                                    selectedDecoration: BoxDecoration(
-                                                                      color: Color.fromRGBO(77, 141, 142, 1),
-                                                                      shape: BoxShape.circle,
-                                                                    ),
-                                                                    todayDecoration: BoxDecoration(
-                                                                      color: Color.fromRGBO(77, 141, 142, 1),
-                                                                      shape: BoxShape.circle,
-                                                                    ),
-                                                                  ),
-                                                                  selectedDayPredicate: (day) {
-                                                                    return isSameDay(_selectedDay, day);
-                                                                  },
-                                                                  headerStyle: HeaderStyle(formatButtonVisible: false, titleCentered: true, 
-                                                                      titleTextStyle: TextStyle(
-                                                                        color : Color.fromRGBO(77, 141, 142, 1),
-                                                                        fontFamily: "Open Sans",
-                                                                        fontWeight: FontWeight.w700,
-                                                                        fontSize: 17.sp,
-                                                                      )),
-                                                                  onDaySelected: (selectedDay, focusedDay) {
-                                                                    if (!isSameDay(_selectedDay, selectedDay)) {
-                                                                      // Call `setState()` when updating the selected day
-                                                                      state(() {
-                                                                        _selectedDay = selectedDay;
-                                                                        _focusedDay = focusedDay;
-                                                                      });
-                                                                    }
-                                                                  },
-                                                                  onFormatChanged: (format) {
-                                                                    if (_calendarFormat != format) {
-                                                                      // Call `setState()` when updating calendar format
-                                                                      state(() {
-                                                                        _calendarFormat = format;
-                                                                      });
-                                                                    }
-                                                                  },
-                                                                  onPageChanged: (focusedDay) {
-                                                                    // No need to call `setState()` here
-                                                                    _focusedDay = focusedDay;
-                                                                  },
-                                                                ),
-                                                                Container(
-                                                                  margin: const EdgeInsets.all(10.0),
-                                                                  width: 342.w,
-                                                                  height: 48.h,
-                                                                  decoration: const BoxDecoration(
-                                                                    borderRadius: BorderRadius.only(
-                                                                      topLeft: Radius.circular(100),
-                                                                      topRight: Radius.circular(100),
-                                                                      bottomLeft: Radius.circular(100),
-                                                                      bottomRight: Radius.circular(100),
-                                                                    ),
-                                                                    color: Color.fromRGBO(1, 92, 93, 1),
-                                                                  ),
-                                                                  child: TextButton(
-                                                                    onPressed: () {
-                                                                      showModalBottomSheet(
-                                                                        context: context,
-                                                                        builder: (context) {
-                                                                          return Column(
-                                                                            mainAxisSize: MainAxisSize.max,
-                                                                            children: <Widget>[
-                                                                              ListTile(
-                                                                                leading: Material(
-                                                                                  color: Colors.transparent,
-                                                                                  child: InkWell(
-                                                                                      onTap: () {
-                                                                                        Navigator.of(context).pop();
-                                                                                      },
-                                                                                      child: const Icon(Icons.arrow_back) // the arrow back icon
-                                                                                    ),
-                                                                                ),
-                                                                                title: Center(
-                                                                                  child: Text(
-                                                                                    'Book appointment',
-                                                                                    style: TextStyle(
-                                                                                      fontFamily: 'Open sans',
-                                                                                      fontSize: 17.sp,
-                                                                                      fontWeight: FontWeight.w600,
-                                                                                    ),
-                                                                                    textAlign: TextAlign.start,
-                                                                                  ), // Your desired title
-                                                                                )
-                                                                              ),
-                                                                              Container(
-                                                                                child: Column(
-                                                                                  // mainAxisAlignment: MainAxisAlignment.start,
-                                                                                  children: [
-                                                                                    Text("Selected Date",
-                                                                                      style: TextStyle(
-                                                                                        fontFamily: 'Open Sans',
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                        fontSize: 17.sp,
-                                                                                      ), 
-                                                                                    ),
-                                                                                    Container(
-                                                                                      child: Column(
-                                                                                        children: [
-                                                                                          Row(
-                                                                                            children: [
-                                                                                              Container(
-                                                                                                margin: const EdgeInsets.all(10.0),
-                                                                                                width: 93.w,
-                                                                                                height: 36.h,
-                                                                                                decoration: const BoxDecoration(
-                                                                                                  borderRadius: BorderRadius.only(
-                                                                                                    topLeft: Radius.circular(100),
-                                                                                                    topRight: Radius.circular(100),
-                                                                                                    bottomLeft: Radius.circular(100),
-                                                                                                    bottomRight: Radius.circular(100),
-                                                                                                  ),
-                                                                                                  color: Color.fromRGBO(1, 92, 93, 1),
-                                                                                                ),
-                                                                                                child:
-                                                                                                TextButton(
-                                                                                                  onPressed: () {
-                                                                                                    // if(formKey.currentState!.validate()){
-                                                                                                    // } 
-                                                                                                  },
-                                                                                                  child: const Text(
-                                                                                                    '8:30 AM',
-                                                                                                    textAlign: TextAlign.center,
-                                                                                                    style: TextStyle(
-                                                                                                      fontFamily: 'Open Sans',
-                                                                                                      fontWeight: FontWeight.normal,
-                                                                                                      fontSize: 24.0,
-                                                                                                      // height: 1,
-                                                                                                      color: Color.fromARGB(255, 255, 255, 255),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                              Container(
-                                                                                                margin: const EdgeInsets.all(10.0),
-                                                                                                width: 93.w,
-                                                                                                height: 36.h,
-                                                                                                decoration: const BoxDecoration(
-                                                                                                  borderRadius: BorderRadius.only(
-                                                                                                    topLeft: Radius.circular(100),
-                                                                                                    topRight: Radius.circular(100),
-                                                                                                    bottomLeft: Radius.circular(100),
-                                                                                                    bottomRight: Radius.circular(100),
-                                                                                                  ),
-                                                                                                  color: Color.fromRGBO(1, 92, 93, 1),
-                                                                                                ),
-                                                                                                child:
-                                                                                                TextButton(
-                                                                                                  onPressed: () {
-                                                                                                    // if(formKey.currentState!.validate()){
-                                                                                                    // } 
-                                                                                                  },
-                                                                                                  child: const Text(
-                                                                                                    'Get OTP',
-                                                                                                    textAlign: TextAlign.center,
-                                                                                                    style: TextStyle(
-                                                                                                      fontFamily: 'Open Sans',
-                                                                                                      fontWeight: FontWeight.normal,
-                                                                                                      fontSize: 24.0,
-                                                                                                      // height: 1,
-                                                                                                      color: Color.fromARGB(255, 255, 255, 255),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                              Container(
-                                                                                                margin: const EdgeInsets.all(10.0),
-                                                                                                width: 93.w,
-                                                                                                height: 36.h,
-                                                                                                decoration: const BoxDecoration(
-                                                                                                  borderRadius: BorderRadius.only(
-                                                                                                    topLeft: Radius.circular(100),
-                                                                                                    topRight: Radius.circular(100),
-                                                                                                    bottomLeft: Radius.circular(100),
-                                                                                                    bottomRight: Radius.circular(100),
-                                                                                                  ),
-                                                                                                  color: Color.fromRGBO(1, 92, 93, 1),
-                                                                                                ),
-                                                                                                child:
-                                                                                                TextButton(
-                                                                                                  onPressed: () {
-                                                                                                    // if(formKey.currentState!.validate()){
-                                                                                                    // } 
-                                                                                                  },
-                                                                                                  child: const Text(
-                                                                                                    'Get OTP',
-                                                                                                    textAlign: TextAlign.center,
-                                                                                                    style: TextStyle(
-                                                                                                      fontFamily: 'Open Sans',
-                                                                                                      fontWeight: FontWeight.normal,
-                                                                                                      fontSize: 24.0,
-                                                                                                      // height: 1,
-                                                                                                      color: Color.fromARGB(255, 255, 255, 255),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ),
-                                                                                              )
-                                                                                            ],
-                                                                                          ),
-                                                                                          Row(
-
-                                                                                          ),
-                                                                                          Row(
-
-                                                                                          ),
-                                                                                          Row(
-
-                                                                                          ),
-                                                                                          Row(
-
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                    )
-                                                                                    
-                                                                                  ],
-                                                                                ),
-                                                                              )
-
-                                                                            ],
-                                                                          );
-                                                                        }
-                                                                      );
-                                                                    },
-                                                                    child: const Text(
-                                                                      "Next",
-                                                                      textAlign: TextAlign.center,
-                                                                      style: TextStyle(
-                                                                        fontFamily: 'Open Sans',
-                                                                        fontWeight: FontWeight.normal,
-                                                                        fontSize: 24.0,
-                                                                        // height: 1,
-                                                                        color: Color.fromARGB(255, 255, 255, 255),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            )
-                                                          );
-                                                    });
-                                                  }
-                                                );
-                                                // if(formKey.currentState!.validate()){
-                                                // Navigator.of(context).push(MaterialPageRoute(
-                                                //   builder: (context) => const LoginScreenOne(),
-                                                // ));
-                                                // }
-                                              },
-                                              child: const Text(
-                                                'Next',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontFamily: 'Open Sans',
-                                                  fontWeight: FontWeight.normal,
-                                                  fontSize: 24.0,
-                                                  // height: 1,
-                                                  color: Color.fromARGB(
-                                                      255, 255, 255, 255),
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  });
-                                });
+                            AppointmentOption(context, textscale);
                           },
                           child: Text(
                             'Book a Appointment',
@@ -766,7 +411,7 @@ class _LandingPageState extends State<LandingPage> {
                             style: TextStyle(
                               fontFamily: 'Open Sans',
                               fontWeight: FontWeight.normal,
-                              fontSize: 17.sp,
+                              fontSize: 17 * textscale,
                               height: 1,
                               color: Color.fromARGB(255, 255, 255, 255),
                             ),
@@ -783,6 +428,523 @@ class _LandingPageState extends State<LandingPage> {
       );
     }
 
+    return Responsive(
+        mobile: LandingPage(context, mywidgets),
+        desktop: LandingPage(context, mywidgets),
+        tablet: LandingPage(context, mywidgets));
+  }
+
+  Future<dynamic> AppointmentOption(BuildContext context, double textscale) {
+    return showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter state) {
+            return Container(
+              decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  )),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  ListTile(
+                      leading: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Icon(
+                                Icons.arrow_back) // the arrow back icon
+                            ),
+                      ),
+                      title: Center(
+                        child: Text(
+                          'Book appointment',
+                          style: TextStyle(
+                            fontFamily: 'Open sans',
+                            fontSize: 17 * textscale,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.start,
+                        ), // Your desired title
+                      )),
+                  Column(
+                    children: [
+                      Text(
+                        'Select Option',
+                        style: TextStyle(
+                          fontFamily: 'Open sans',
+                          fontSize: 15 * MediaQuery.of(context).textScaleFactor,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        textAlign: TextAlign.justify,
+                      ),
+                      RadioListTile(
+                        title: const Text("Tele-Consultation"),
+                        value: "Tele-Consultation",
+                        activeColor: const Color.fromRGBO(239, 97, 32, 1),
+                        groupValue: appointment,
+                        onChanged: (value) {
+                          state(() {
+                            appointment = value;
+                          });
+                        },
+                      ),
+                      RadioListTile(
+                        title: const Text("Visit to clinic"),
+                        value: "Visit to clinic",
+                        activeColor: const Color.fromRGBO(239, 97, 32, 1),
+                        groupValue: appointment,
+                        onChanged: (value) {
+                          state(() {
+                            appointment = value;
+                          });
+                        },
+                      ),
+                      RadioListTile(
+                        title: const Text("Video Consultation"),
+                        value: "Video Consultation",
+                        activeColor: const Color.fromRGBO(239, 97, 32, 1),
+                        groupValue: appointment,
+                        onChanged: (value) {
+                          state(() {
+                            appointment = value;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.all(10.0),
+                    width: 342,
+                    height: 48,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(100),
+                        topRight: Radius.circular(100),
+                        bottomLeft: Radius.circular(100),
+                        bottomRight: Radius.circular(100),
+                      ),
+                      color: Color.fromRGBO(1, 92, 93, 1),
+                    ),
+                    child: AppointmentDate(context),
+                  )
+                ],
+              ),
+            );
+          });
+        });
+  }
+
+  TextButton AppointmentDate(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        // showDatePicker(
+        //         context: context,
+        //         initialDate: date,
+        //         firstDate: DateTime(1900),
+        //         lastDate: DateTime(2100),
+        //       );
+        showModalBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent,
+            builder: (BuildContext context) {
+              return StatefulBuilder(
+                  builder: (BuildContext context, StateSetter state) {
+                return Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(25),
+                          topRight: Radius.circular(25),
+                        )),
+                    child: Column(
+                      children: [
+                        ListTile(
+                            leading: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Icon(
+                                      Icons.arrow_back) // the arrow back icon
+                                  ),
+                            ),
+                            title: Center(
+                              child: Text(
+                                'Book appointment',
+                                style: TextStyle(
+                                  fontFamily: 'Open sans',
+                                  fontSize: 17 *
+                                      MediaQuery.of(context).textScaleFactor,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                textAlign: TextAlign.start,
+                              ), // Your desired title
+                            )),
+                        TableCalendar(
+                          firstDay: DateTime.utc(2010, 10, 16),
+                          lastDay: DateTime.utc(2030, 3, 14),
+                          rowHeight: 43,
+                          focusedDay: _focusedDay,
+                          calendarFormat: _calendarFormat,
+                          calendarStyle: const CalendarStyle(
+                            selectedDecoration: BoxDecoration(
+                              color: Color.fromRGBO(77, 141, 142, 1),
+                              shape: BoxShape.circle,
+                            ),
+                            todayDecoration: BoxDecoration(
+                              color: Color.fromRGBO(77, 141, 142, 1),
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          selectedDayPredicate: (day) {
+                            return isSameDay(_selectedDay, day);
+                          },
+                          headerStyle: HeaderStyle(
+                              formatButtonVisible: false,
+                              titleCentered: true,
+                              titleTextStyle: TextStyle(
+                                color: Color.fromRGBO(77, 141, 142, 1),
+                                fontFamily: "Open Sans",
+                                fontWeight: FontWeight.w700,
+                                fontSize:
+                                    17 * MediaQuery.of(context).textScaleFactor,
+                              )),
+                          onDaySelected: (selectedDay, focusedDay) {
+                            if (!isSameDay(_selectedDay, selectedDay)) {
+                              // Call `setState()` when updating the selected day
+                              state(() {
+                                _selectedDay = selectedDay;
+                                _focusedDay = focusedDay;
+                                _date.text = _selectedDay.toString();
+                              });
+                            }
+                          },
+                          onFormatChanged: (format) {
+                            if (_calendarFormat != format) {
+                              // Call `setState()` when updating calendar format
+                              state(() {
+                                _calendarFormat = format;
+                              });
+                            }
+                          },
+                          onPageChanged: (focusedDay) {
+                            // No need to call `setState()` here
+                            _focusedDay = focusedDay;
+                          },
+                        ),
+                        Container(
+                          margin: const EdgeInsets.all(10.0),
+                          width: 342.w,
+                          height: 48.h,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(100),
+                              topRight: Radius.circular(100),
+                              bottomLeft: Radius.circular(100),
+                              bottomRight: Radius.circular(100),
+                            ),
+                            color: Color.fromRGBO(1, 92, 93, 1),
+                          ),
+                          child: AppointmentTime(context),
+                        )
+                      ],
+                    ));
+              });
+            });
+        // if(formKey.currentState!.validate()){
+        // Navigator.of(context).push(MaterialPageRoute(
+        //   builder: (context) => const LoginScreenOne(),
+        // ));
+        // }
+      },
+      child: const Text(
+        'Next',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: 'Open Sans',
+          fontWeight: FontWeight.normal,
+          fontSize: 24.0,
+          // height: 1,
+          color: Color.fromARGB(255, 255, 255, 255),
+        ),
+      ),
+    );
+  }
+
+  TextButton AppointmentTime(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return StatefulBuilder(
+                  builder: (BuildContext context, StateSetter state) {
+                return Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      ListTile(
+                          leading: Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Icon(
+                                    Icons.arrow_back) // the arrow back icon
+                                ),
+                          ),
+                          title: Center(
+                            child: Text(
+                              'Book appointment',
+                              style: TextStyle(
+                                fontFamily: 'Open sans',
+                                fontSize:
+                                    17 * MediaQuery.of(context).textScaleFactor,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              textAlign: TextAlign.start,
+                            ), // Your desired title
+                          )),
+                      // Container(
+                      // width: MediaQuery.of(context).size.width,
+                      // padding: EdgeInsets.symmetric(horizontal: 24.w),
+                      // child:
+                      Column(
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          // Text("Selected Date",
+                          //     style: TextStyle(
+                          //       fontFamily: 'Open Sans',
+                          //       fontWeight: FontWeight.w600,
+                          //       fontSize: 17 * MediaQuery.of(context).textScaleFactor,
+                          //     ),
+                          //     textAlign: TextAlign.left,
+                          // ),
+                          TextFormField(
+                            controller: _date,
+                            decoration: InputDecoration(
+                              suffixIcon: Icon(Icons.calendar_month),
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            // height: MediaQuery.of(context).size.height,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "Select Time Slot",
+                                  style: TextStyle(
+                                    fontFamily: 'Open Sans',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17 *
+                                        MediaQuery.of(context).textScaleFactor,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                Wrap(
+                                  spacing: 16.0,
+                                  runSpacing: 20.0,
+                                  children: [
+                                    for (var item in slots)
+                                      _myChip(item, 'Sylvester', state),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      Container(
+                        // margin: const EdgeInsets.all(3.0),
+                        width: 93.w,
+                        height: 36.h,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color.fromRGBO(210, 210, 210, 1),
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(100),
+                            topRight: Radius.circular(100),
+                            bottomLeft: Radius.circular(100),
+                            bottomRight: Radius.circular(100),
+                          ),
+                          color: Color.fromRGBO(1, 92, 93, 1),
+                        ),
+                        child: Center(
+                          child: AppointmentPurpose(state, context),
+                        ),
+                      )
+                      // )
+                    ]);
+              });
+            });
+      },
+      child: Text(
+        "Next",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontFamily: 'Open Sans',
+          fontWeight: FontWeight.normal,
+          fontSize: 17 * MediaQuery.of(context).textScaleFactor,
+          // height: 1,
+          color: Color.fromARGB(255, 255, 255, 255),
+        ),
+      ),
+    );
+  }
+
+  TextButton AppointmentPurpose(StateSetter state, BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        state(() {
+            showModalBottomSheet(
+                    context: context,
+                    backgroundColor: Colors.transparent,
+                    builder: (BuildContext context) {
+                      return StatefulBuilder(
+                          builder: (BuildContext context, StateSetter state) {
+                        return Container(
+                          decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(25),
+                                topRight: Radius.circular(25),
+                              )),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              ListTile(
+                                  leading: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Icon(
+                                            Icons.arrow_back) // the arrow back icon
+                                        ),
+                                  ),
+                                  title: Center(
+                                    child: Text(
+                                      'Book appointment',
+                                      style: TextStyle(
+                                        fontFamily: 'Open sans',
+                                        fontSize: 17 * MediaQuery.of(context).textScaleFactor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      textAlign: TextAlign.start,
+                                    ), // Your desired title
+                                  )),
+                              Column(
+                                children: [
+                                  Text(
+                                    'Select Option',
+                                    style: TextStyle(
+                                      fontFamily: 'Open sans',
+                                      fontSize: 15 * MediaQuery.of(context).textScaleFactor,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    textAlign: TextAlign.justify,
+                                  ),
+                                  RadioListTile(
+                                    title: const Text("Tele-Consultation"),
+                                    value: "Tele-Consultation",
+                                    activeColor: const Color.fromRGBO(239, 97, 32, 1),
+                                    groupValue: appointment,
+                                    onChanged: (value) {
+                                      state(() {
+                                        appointment = value;
+                                      });
+                                    },
+                                  ),
+                                  RadioListTile(
+                                    title: const Text("Visit to clinic"),
+                                    value: "Visit to clinic",
+                                    activeColor: const Color.fromRGBO(239, 97, 32, 1),
+                                    groupValue: appointment,
+                                    onChanged: (value) {
+                                      state(() {
+                                        appointment = value;
+                                      });
+                                    },
+                                  ),
+                                  RadioListTile(
+                                    title: const Text("Video Consultation"),
+                                    value: "Video Consultation",
+                                    activeColor: const Color.fromRGBO(239, 97, 32, 1),
+                                    groupValue: appointment,
+                                    onChanged: (value) {
+                                      state(() {
+                                        appointment = value;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                margin: const EdgeInsets.all(10.0),
+                                width: 342,
+                                height: 48,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(100),
+                                    topRight: Radius.circular(100),
+                                    bottomLeft: Radius.circular(100),
+                                    bottomRight: Radius.circular(100),
+                                  ),
+                                  color: Color.fromRGBO(1, 92, 93, 1),
+                                ),
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => AppSummary(),
+                                    ));
+                                  },
+                                  child: Text(
+                                    'Next',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontFamily: 'Open Sans',
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 15.0,
+                                        // height: 1,
+                                        color: Color.fromRGBO(252, 252, 252, 1)
+                                    ),
+                                  )
+                                                      
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      });
+                    });
+        });
+      },
+      child: Text(
+        'Next',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            fontFamily: 'Open Sans',
+            fontWeight: FontWeight.normal,
+            fontSize: 15.0,
+            // height: 1,
+            color: Color.fromRGBO(252, 252, 252, 1)),
+      ),
+    );
+  }
+
+  Scaffold LandingPage(BuildContext context, List<Widget> mywidgets) {
     return Scaffold(
       appBar: AppBar(
         leading: Builder(
@@ -823,7 +985,7 @@ class _LandingPageState extends State<LandingPage> {
                       builder: (context) => const Notificationpage(),
                     ));
                   }),
-                  counter == 0
+              counter == 0
                   ? Positioned(
                       right: 15,
                       top: 15,
@@ -856,52 +1018,47 @@ class _LandingPageState extends State<LandingPage> {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height : 190.h, 
-              child : DrawerHeader(
-                  decoration: const BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                  child: Container(
-                      // height: 142,
-                      width: MediaQuery.of(context).size.width,
-                      // height: MediaQuery.of(context).size.height,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Image.asset(
-                            "images/sidebardp.png",
-                            width: 80.w,
-                            height: 80.h,
-                          ),
-                          Text("Sudha Ragunathan",
-                              style: TextStyle(
-                                  fontFamily: "Open Sans",
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 17.sp,
-                                  color: Colors.black
-                                )
-                          ),
-                          TextButton(
+              height: 190.h,
+              child: DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Colors.transparent,
+                ),
+                child: Container(
+                    // height: 142,
+                    width: double.infinity,
+                    // height: MediaQuery.of(context).size.height,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Image.asset(
+                          "images/sidebardp.png",
+                          width: 80.w,
+                          height: 80.h,
+                        ),
+                        Text("Sudha Ragunathan",
+                            style: TextStyle(
+                                fontFamily: "Open Sans",
+                                fontWeight: FontWeight.w700,
+                                fontSize:
+                                    17 * MediaQuery.of(context).textScaleFactor,
+                                color: Colors.black)),
+                        TextButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => const ViewEditProfile(),
                               ));
                             },
-                            child: 
-                              Text(
-                                'View and edit profile',
+                            child: Text('View and edit profile',
                                 style: TextStyle(
                                   fontFamily: "Open Sans",
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 12.sp,
+                                  fontSize: 12 *
+                                      MediaQuery.of(context).textScaleFactor,
                                   color: Color.fromRGBO(77, 141, 142, 1),
-                                )
-                              )
-                          )
-                        ],
-                      )
-                    ),
+                                )))
+                      ],
+                    )),
               ),
             ),
             GestureDetector(
@@ -922,7 +1079,7 @@ class _LandingPageState extends State<LandingPage> {
                     'Online consultation',
                     style: TextStyle(
                       fontFamily: 'Open sans',
-                      fontSize: 16.sp,
+                      fontSize: 16 * MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.start,
@@ -951,7 +1108,7 @@ class _LandingPageState extends State<LandingPage> {
                     'Book Appointment',
                     style: TextStyle(
                       fontFamily: 'Open sans',
-                      fontSize: 16.sp,
+                      fontSize: 16 * MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.start,
@@ -977,7 +1134,7 @@ class _LandingPageState extends State<LandingPage> {
                     'Health summary',
                     style: TextStyle(
                       fontFamily: 'Open sans',
-                      fontSize: 16.sp,
+                      fontSize: 16 * MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.start,
@@ -997,13 +1154,14 @@ class _LandingPageState extends State<LandingPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   IconButton(
-                      onPressed: () => print("hello"),
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => const Emr())),
                       icon: Image.asset('images/emr.png')),
                   Text(
                     'EMR',
                     style: TextStyle(
                       fontFamily: 'Open sans',
-                      fontSize: 16.sp,
+                      fontSize: 16 * MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.start,
@@ -1029,7 +1187,7 @@ class _LandingPageState extends State<LandingPage> {
                     'OneGlance wallet',
                     style: TextStyle(
                       fontFamily: 'Open sans',
-                      fontSize: 16.sp,
+                      fontSize: 16 * MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.start,
@@ -1055,7 +1213,7 @@ class _LandingPageState extends State<LandingPage> {
                     'Collection report',
                     style: TextStyle(
                       fontFamily: 'Open sans',
-                      fontSize: 16.sp,
+                      fontSize: 16 * MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.start,
@@ -1081,7 +1239,7 @@ class _LandingPageState extends State<LandingPage> {
                     'Settings',
                     style: TextStyle(
                       fontFamily: 'Open sans',
-                      fontSize: 16.sp,
+                      fontSize: 16 * MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.start,
@@ -1107,7 +1265,7 @@ class _LandingPageState extends State<LandingPage> {
                     'Logout',
                     style: TextStyle(
                       fontFamily: 'Open sans',
-                      fontSize: 16.sp,
+                      fontSize: 16 * MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.start,
@@ -1136,7 +1294,7 @@ class _LandingPageState extends State<LandingPage> {
                     style: TextStyle(
                         color: Color.fromRGBO(77, 141, 142, 1),
                         fontFamily: 'Open Sans',
-                        fontSize: 16.sp,
+                        fontSize: 16 * MediaQuery.of(context).textScaleFactor,
                         // letterSpacing: -0.3199999928474426,
                         fontWeight: FontWeight.normal,
                         height: 1.375.h),
@@ -1162,7 +1320,7 @@ class _LandingPageState extends State<LandingPage> {
                     'Share the app',
                     style: TextStyle(
                       fontFamily: 'Open sans',
-                      fontSize: 16.sp,
+                      fontSize: 16 * MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.start,
@@ -1188,7 +1346,7 @@ class _LandingPageState extends State<LandingPage> {
                     'Rate the app',
                     style: TextStyle(
                       fontFamily: 'Open sans',
-                      fontSize: 16.sp,
+                      fontSize: 16 * MediaQuery.of(context).textScaleFactor,
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.start,
@@ -1225,13 +1383,13 @@ class _LandingPageState extends State<LandingPage> {
                     Text('Welcome! 👋',
                         style: TextStyle(
                           fontFamily: 'Open sans',
-                          fontSize: 17.sp,
+                          fontSize: 17 * MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w400,
                         )),
                     Text('Sudha Ragunathan',
                         style: TextStyle(
                           fontFamily: 'Open sans',
-                          fontSize: 24.sp,
+                          fontSize: 24 * MediaQuery.of(context).textScaleFactor,
                           fontWeight: FontWeight.w700,
                         )),
                   ],

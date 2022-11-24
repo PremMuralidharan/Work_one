@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Onboardpageone extends StatefulWidget {
   const Onboardpageone({super.key});
@@ -10,10 +11,7 @@ class Onboardpageone extends StatefulWidget {
 class _OnboardpageoneState extends State<Onboardpageone> {
   @override
   Widget build(BuildContext context) {
-    double deviceHeight(BuildContext context) =>
-        MediaQuery.of(context).size.height;
-    double deviceWidth(BuildContext context) =>
-        MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: SafeArea(
         child: Container(

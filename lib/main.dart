@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/screens/Login/LoginScreenOne.dart';
-import 'package:my_app/screens/Login/LoginScreenTwo.dart';
-import 'package:my_app/screens/Onboard/OnBoardpage.dart';
-import 'package:my_app/screens/Onboard/Onboardpage2.dart';
 import 'package:my_app/screens/Onboard/Onboardpage3.dart';
-import 'package:my_app/screens/Onboard/smoothpage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
@@ -24,7 +19,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomeScreen1(),
+        home: Onboardpage(),
       ),
       // designSize: Size(390, 1091),
     );

@@ -3,7 +3,7 @@ import 'package:my_app/screens/Login/LoginScreenOne.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
-
+import 'package:my_app/responsive.dart';
 class LoginScreenTwo extends StatefulWidget {
   const LoginScreenTwo({super.key});
 
@@ -39,7 +39,16 @@ class _LoginScreenTwoState extends State<LoginScreenTwo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: Responsive(
+        mobile: PhoneVerification(context),
+        desktop: PhoneVerification(context),
+        tablet: PhoneVerification(context),
+      ),
+    );
+  }
+
+  SafeArea PhoneVerification(BuildContext context) {
+    return SafeArea(
         child: Column(
             // left: 24.0,
             // top: 114.0,
@@ -63,8 +72,8 @@ class _LoginScreenTwoState extends State<LoginScreenTwo> {
                     ),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 30.0),
-                      width: 340,
-                      height: 54,
+                      // width: 340,
+                      // height: 54,
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
                         border: Border.all(
@@ -150,7 +159,6 @@ class _LoginScreenTwoState extends State<LoginScreenTwo> {
                 ),
               )
             ]),
-      ),
-    );
+      );
   }
 }

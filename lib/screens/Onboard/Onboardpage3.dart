@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:my_app/models/SliderModel.dart';
 import 'package:my_app/screens/Login/LoginScreenOne.dart';
 import 'package:my_app/screens/Login/LoginScreenTwo.dart';
+import 'package:my_app/responsive.dart';
 
-class HomeScreen1 extends StatefulWidget {
+class Onboardpage extends StatefulWidget {
   @override
-  _HomeScreen1State createState() => _HomeScreen1State();
+  _OnboardpageState createState() => _OnboardpageState();
 }
 
-class _HomeScreen1State extends State<HomeScreen1> {
+class _OnboardpageState extends State<Onboardpage> {
   List<SliderModel> slides = [];
   int currentIndex = 0;
   PageController? _controller;
-
+ 
   @override
   void initState() {
     // TODO: implement initState
@@ -29,12 +30,22 @@ class _HomeScreen1State extends State<HomeScreen1> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    Size _size = MediaQuery.of(context).size;
 
+    return Scaffold(
         // Column created
-      body: SafeArea(
+      body: Responsive(
+        mobile: onboardwidget(context),
+        desktop: onboardwidget(context),
+        tablet: onboardwidget(context),
+      )
+    );
+  }
+
+  SafeArea onboardwidget(BuildContext context) {
+    return SafeArea(
       child: Container(
-        margin: EdgeInsets.fromLTRB(24, 0, 24, 100),
+        padding: EdgeInsets.fromLTRB(24, 0, 24, 100),
         child: Column(
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             // crossAxisAlignment: CrossAxisAlignment.center,
@@ -157,7 +168,7 @@ class _HomeScreen1State extends State<HomeScreen1> {
               //     width: 342,
               //     height: 48,
               //     onPressed: () {
-
+    
               //     },
               //     decoration: const BoxDecoration(
               //       borderRadius: BorderRadius.only(
@@ -182,8 +193,8 @@ class _HomeScreen1State extends State<HomeScreen1> {
               //   ),
               // ),
             ]),
-      ),
-    ));
+        ),
+      );
   }
 
   Container buildDot(int index, BuildContext context) {
@@ -214,33 +225,48 @@ class Slider extends StatelessWidget {
       // column containing image
       // title and description
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Image(image: AssetImage(image)),
-          SizedBox(height: 100),
+          // SizedBox(height: 100),
           Container(
                 // margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
                 alignment: Alignment.centerLeft,
-                child: const Text(
-                  "Title 001",
-                  style: TextStyle(
-                    fontFamily: 'Open Sans',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30.0,
-                    height: 1,
-                    color: Color.fromARGB(255, 0, 0, 0),
-                  ),
+                // mainAxisAlignment: MainAxisAlignment.start
+                child: Column(
+                  children: [
+                    const Text(
+                      "Title 001",
+                      style: TextStyle(
+                        fontFamily: 'Open Sans',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30.0,
+                        height: 1,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                    ),
+                    
+                  ],
                 ),
           ),
-          SizedBox(height: 10),
-          Text(
-            textAlign: TextAlign.left,
-            title,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
+          // SizedBox(height: 10),
+          Container(
+                // margin: const EdgeInsets.fromLTRB(0, 50, 0, 0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                textAlign: TextAlign.left,
+                title,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
+              ),
           ),
-          SizedBox(height: 12),
+          // Text(
+          //   textAlign: TextAlign.left,
+          //   title,
+          //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
+          // ),
+          // SizedBox(height: 12),
           // Text(description),
-          SizedBox(height: 25),
+          // SizedBox(height: 25),
         ],
       ),
     );

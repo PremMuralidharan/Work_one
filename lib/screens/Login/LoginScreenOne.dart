@@ -3,7 +3,7 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:my_app/screens/Landingpage/Landing_page.dart';
-
+import 'package:my_app/responsive.dart';
 class LoginScreenOne extends StatefulWidget {
   const LoginScreenOne({super.key});
 
@@ -17,9 +17,18 @@ class _LoginScreenOneState extends State<LoginScreenOne> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: Responsive(
+        mobile: OtpVerification(context),
+        desktop: OtpVerification(context),
+        tablet: OtpVerification(context),
+      ),
+    );
+  }
+
+  SafeArea OtpVerification(BuildContext context) {
+    return SafeArea(
         child: Column(
-    
+        
           // left: 24.0,
           // top: 114.0,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -123,7 +132,6 @@ class _LoginScreenOneState extends State<LoginScreenOne> {
             )
           ]
         ),
-      ),
-    );
+      );
   }
 }
